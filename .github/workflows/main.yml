@@ -1,0 +1,38 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      # checkout the repos
+      - uses: actions/checkout@master
+      - name: test1
+        run: |
+          pwd
+          ls
+      # install dependencies, build, and test
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+          pwd
+          ls
+      - name: run cf
+        run:  |       
+          cf login -u ${{ secrets.cf_username }} -p '${{ secrets.cf_password }}' -a "https://api.run.pivotal.io"             
+          cf push my-app -c "node index.js"
+#         cf login -u ${{ secrets.cf_username }} -p '${{ secrets.cf_password }}' -a https://api.ldev.cfdev.sh --skip-ssl-validation          
+#         cf push g-app -b https://github.com/cloudfoundry/nodejs-buildpack"
+          
+
+#      - uses: ManulifeOpenSource/cloud-foundry-action@master
+#        env:
+#          CF_USERNAME: ${{ secrets.cf_username }}
+#          CF_PASSWORD: '${{ secrets.cf_password }}'
+#          CF_TARGET_ORG: gabi_org
+#          CF_TARGET_SPACE: development
+#        with:
+#          args: 'push g-app -b https://github.com/cloudfoundry/nodejs-buildpack'
