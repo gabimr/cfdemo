@@ -22,7 +22,7 @@ jobs:
           ls
       - name: run cf
         run:  |       
-          cf login -u ${{ secrets.cf_username }} -p '${{ secrets.cf_password }}' -a "https://api.run.pivotal.io"             
+          cf login -u ${{ secrets.cf_username }} -p '${{ secrets.cf_password }}' -a https://api.run.pivotal.io            
           cf push my-app1 -c "node index.js"
 #         cf login -u ${{ secrets.cf_username }} -p '${{ secrets.cf_password }}' -a https://api.ldev.cfdev.sh --skip-ssl-validation          
 #         cf push g-app -b https://github.com/cloudfoundry/nodejs-buildpack"
